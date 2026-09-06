@@ -1,5 +1,5 @@
 from itsdangerous import URLSafeTimedSerializer
-secret_key='Code8978'
+secret_key='code8989'
 def endata(data):
     serializer=URLSafeTimedSerializer(secret_key)
     return serializer.dumps(data,salt='otpverify')
