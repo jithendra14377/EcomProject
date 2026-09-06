@@ -14,7 +14,10 @@ mydb=connection.MySQLConnection(user='root',host='localhost',password='Jithendra
 import re
 import os
 import uuid
-import razorpay
+try:
+    import razorpay
+except ImportError:  # pragma: no cover - optional dependency for payments
+    razorpay = None
 from io  import BytesIO
 from reportlab.platypus import (
     SimpleDocTemplate,Table,TableStyle,Paragraph,Spacer
@@ -45,7 +48,11 @@ app.config['SESSION_COOKIE_SECURE']=True
 app.config['SESSION-COOKIE_HTTPONLY']=True
 app.config['SESSION_COOKIE_SAMESITE']="None"
 Session(app)
-client=razorpay.Client(auth=("rzp_test_TA58JXNwGMidwj", "MHYZmQ5sA0nfB5DNeAPIBzRC"))
+if razorpay is not None:
+    client = razorpay.Client(auth=("rzp_test_TA58JXNwGMidwj", "MHYZmQ5sA0nfB5DNeAPIBzRC"))
+else:
+    client = None
+
 @app.route('/',methods=['GET'])
 def index():
     return jsonify({
